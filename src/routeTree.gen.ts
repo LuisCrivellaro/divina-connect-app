@@ -9,51 +9,215 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainRouteImport } from './routes/_main'
+import { Route as MainIndexRouteImport } from './routes/_main.index'
+import { Route as MainPerfilRouteImport } from './routes/_main.perfil'
+import { Route as MainOracaoRouteImport } from './routes/_main.oracao'
+import { Route as MainGaleriaRouteImport } from './routes/_main.galeria'
+import { Route as MainAvisosRouteImport } from './routes/_main.avisos'
+import { Route as MainAgendaRouteImport } from './routes/_main.agenda'
+import { Route as MainAdoracaoRouteImport } from './routes/_main.adoracao'
 
-const IndexRoute = IndexRouteImport.update({
+const MainRoute = MainRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainIndexRoute = MainIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => MainRoute,
+} as any)
+const MainPerfilRoute = MainPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainOracaoRoute = MainOracaoRouteImport.update({
+  id: '/oracao',
+  path: '/oracao',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainGaleriaRoute = MainGaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainAvisosRoute = MainAvisosRouteImport.update({
+  id: '/avisos',
+  path: '/avisos',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainAgendaRoute = MainAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainAdoracaoRoute = MainAdoracaoRouteImport.update({
+  id: '/adoracao',
+  path: '/adoracao',
+  getParentRoute: () => MainRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof MainIndexRoute
+  '/adoracao': typeof MainAdoracaoRoute
+  '/agenda': typeof MainAgendaRoute
+  '/avisos': typeof MainAvisosRoute
+  '/galeria': typeof MainGaleriaRoute
+  '/oracao': typeof MainOracaoRoute
+  '/perfil': typeof MainPerfilRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/adoracao': typeof MainAdoracaoRoute
+  '/agenda': typeof MainAgendaRoute
+  '/avisos': typeof MainAvisosRoute
+  '/galeria': typeof MainGaleriaRoute
+  '/oracao': typeof MainOracaoRoute
+  '/perfil': typeof MainPerfilRoute
+  '/': typeof MainIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_main': typeof MainRouteWithChildren
+  '/_main/adoracao': typeof MainAdoracaoRoute
+  '/_main/agenda': typeof MainAgendaRoute
+  '/_main/avisos': typeof MainAvisosRoute
+  '/_main/galeria': typeof MainGaleriaRoute
+  '/_main/oracao': typeof MainOracaoRoute
+  '/_main/perfil': typeof MainPerfilRoute
+  '/_main/': typeof MainIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/adoracao'
+    | '/agenda'
+    | '/avisos'
+    | '/galeria'
+    | '/oracao'
+    | '/perfil'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/adoracao'
+    | '/agenda'
+    | '/avisos'
+    | '/galeria'
+    | '/oracao'
+    | '/perfil'
+    | '/'
+  id:
+    | '__root__'
+    | '/_main'
+    | '/_main/adoracao'
+    | '/_main/agenda'
+    | '/_main/avisos'
+    | '/_main/galeria'
+    | '/_main/oracao'
+    | '/_main/perfil'
+    | '/_main/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  MainRoute: typeof MainRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/': {
+      id: '/_main/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MainIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/perfil': {
+      id: '/_main/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof MainPerfilRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/oracao': {
+      id: '/_main/oracao'
+      path: '/oracao'
+      fullPath: '/oracao'
+      preLoaderRoute: typeof MainOracaoRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/galeria': {
+      id: '/_main/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof MainGaleriaRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/avisos': {
+      id: '/_main/avisos'
+      path: '/avisos'
+      fullPath: '/avisos'
+      preLoaderRoute: typeof MainAvisosRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/agenda': {
+      id: '/_main/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof MainAgendaRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/adoracao': {
+      id: '/_main/adoracao'
+      path: '/adoracao'
+      fullPath: '/adoracao'
+      preLoaderRoute: typeof MainAdoracaoRouteImport
+      parentRoute: typeof MainRoute
     }
   }
 }
 
+interface MainRouteChildren {
+  MainAdoracaoRoute: typeof MainAdoracaoRoute
+  MainAgendaRoute: typeof MainAgendaRoute
+  MainAvisosRoute: typeof MainAvisosRoute
+  MainGaleriaRoute: typeof MainGaleriaRoute
+  MainOracaoRoute: typeof MainOracaoRoute
+  MainPerfilRoute: typeof MainPerfilRoute
+  MainIndexRoute: typeof MainIndexRoute
+}
+
+const MainRouteChildren: MainRouteChildren = {
+  MainAdoracaoRoute: MainAdoracaoRoute,
+  MainAgendaRoute: MainAgendaRoute,
+  MainAvisosRoute: MainAvisosRoute,
+  MainGaleriaRoute: MainGaleriaRoute,
+  MainOracaoRoute: MainOracaoRoute,
+  MainPerfilRoute: MainPerfilRoute,
+  MainIndexRoute: MainIndexRoute,
+}
+
+const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  MainRoute: MainRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
