@@ -2,13 +2,13 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Cormorant Garamond", serif;
-  --font-sans: "Outfit", sans-serif;
+  --font-display: "Poppins", sans-serif;
+  --font-sans: "Poppins", sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -47,56 +47,56 @@
 :root {
   --radius: 1.25rem;
 
-  /* Warm dark base */
-  --background: oklch(0.18 0.025 60);
-  --foreground: oklch(0.96 0.012 80);
+  /* Light, airy base — white with soft warm gradient */
+  --background: oklch(0.99 0.008 80);
+  --foreground: oklch(0.22 0.03 60);
 
-  --surface: oklch(0.22 0.028 60);
-  --surface-elevated: oklch(0.26 0.032 65);
+  --surface: oklch(0.985 0.012 80);
+  --surface-elevated: oklch(1 0 0);
 
-  --card: oklch(0.24 0.03 62);
-  --card-foreground: oklch(0.96 0.012 80);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.03 60);
 
-  --popover: oklch(0.24 0.03 62);
-  --popover-foreground: oklch(0.96 0.012 80);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.03 60);
 
   /* Gold primary #D29320 */
   --primary: oklch(0.72 0.145 70);
-  --primary-foreground: oklch(0.16 0.02 60);
-  --primary-glow: oklch(0.82 0.16 80);
+  --primary-foreground: oklch(1 0 0);
+  --primary-glow: oklch(0.86 0.13 82);
   --gold: oklch(0.72 0.145 70);
-  --gold-soft: oklch(0.85 0.09 80);
+  --gold-soft: oklch(0.92 0.07 82);
 
-  --burgundy: oklch(0.45 0.15 25);
+  --burgundy: oklch(0.55 0.15 30);
 
-  --secondary: oklch(0.28 0.035 65);
-  --secondary-foreground: oklch(0.96 0.012 80);
+  --secondary: oklch(0.96 0.02 80);
+  --secondary-foreground: oklch(0.25 0.03 60);
 
-  --muted: oklch(0.26 0.025 60);
-  --muted-foreground: oklch(0.72 0.025 75);
+  --muted: oklch(0.95 0.018 80);
+  --muted-foreground: oklch(0.5 0.03 70);
 
-  --accent: oklch(0.72 0.145 70);
-  --accent-foreground: oklch(0.16 0.02 60);
+  --accent: oklch(0.92 0.07 82);
+  --accent-foreground: oklch(0.3 0.05 60);
 
-  --destructive: oklch(0.55 0.2 25);
+  --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.32 0.025 65 / 60%);
-  --input: oklch(0.3 0.025 65);
+  --border: oklch(0.9 0.02 80 / 80%);
+  --input: oklch(0.94 0.02 80);
   --ring: oklch(0.72 0.145 70);
 
-  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.145 70), oklch(0.82 0.16 80));
-  --gradient-warm: linear-gradient(160deg, oklch(0.24 0.03 62), oklch(0.18 0.025 60));
-  --gradient-gold-deep: linear-gradient(140deg, oklch(0.62 0.14 60), oklch(0.78 0.15 75));
-  --gradient-radial-gold: radial-gradient(circle at 30% 20%, oklch(0.72 0.145 70 / 30%), transparent 60%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.145 70), oklch(0.86 0.13 82));
+  --gradient-warm: linear-gradient(160deg, oklch(1 0 0), oklch(0.96 0.04 82));
+  --gradient-gold-deep: linear-gradient(140deg, oklch(0.78 0.15 72), oklch(0.88 0.12 82));
+  --gradient-radial-gold: radial-gradient(circle at 30% 20%, oklch(0.86 0.13 82 / 35%), transparent 60%);
 
-  --shadow-soft: 0 4px 16px -4px oklch(0.1 0.02 60 / 50%);
-  --shadow-elegant: 0 12px 40px -12px oklch(0.1 0.02 60 / 70%);
-  --shadow-gold: 0 8px 32px -8px oklch(0.72 0.145 70 / 40%);
+  --shadow-soft: 0 4px 16px -4px oklch(0.72 0.145 70 / 15%);
+  --shadow-elegant: 0 12px 40px -12px oklch(0.72 0.145 70 / 22%);
+  --shadow-gold: 0 8px 32px -8px oklch(0.72 0.145 70 / 35%);
 }
 
 .dark {
-  --background: oklch(0.16 0.022 60);
+  --background: oklch(0.99 0.008 80);
 }
 
 @layer base {
@@ -107,11 +107,12 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     background-image:
-      radial-gradient(ellipse at top, oklch(0.72 0.145 70 / 12%), transparent 50%),
-      radial-gradient(ellipse at bottom, oklch(0.45 0.15 25 / 8%), transparent 50%);
+      radial-gradient(ellipse at top, oklch(0.86 0.13 82 / 30%), transparent 55%),
+      radial-gradient(ellipse at bottom right, oklch(0.92 0.09 70 / 25%), transparent 55%),
+      linear-gradient(180deg, oklch(1 0 0), oklch(0.97 0.03 82));
     background-attachment: fixed;
   }
-  h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+  h1, h2, h3, .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
 }
 
 @layer utilities {
@@ -124,7 +125,7 @@
   .shadow-gold { box-shadow: var(--shadow-gold); }
   .texture-grain {
     background-image:
-      radial-gradient(circle at 1px 1px, oklch(1 0 0 / 3%) 1px, transparent 0);
+      radial-gradient(circle at 1px 1px, oklch(0.72 0.145 70 / 5%) 1px, transparent 0);
     background-size: 24px 24px;
   }
 }
