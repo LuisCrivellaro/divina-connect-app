@@ -94,6 +94,7 @@ function LoginPage() {
             </Link>
           </p>
         </form>
+        </div>
 
         <div className="mt-8 flex justify-center">
           <img
