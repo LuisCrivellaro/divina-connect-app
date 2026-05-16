@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import authBg from "@/assets/auth-bg.jpg";
-import logo from "@/assets/logo-divina.png";
+import logo from "@/assets/logo-divina-horizontal.png";
 
 export const Route = createFileRoute("/cadastro")({
   component: CadastroPage,
@@ -28,11 +28,8 @@ function CadastroPage() {
           ← Voltar
         </button>
 
-        <div className="flex flex-col items-center mt-8 mb-6">
-          <div className="h-20 w-20 rounded-3xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center shadow-2xl">
-            <img src={logo} alt="Divina Providência" className="h-12 w-auto" />
-          </div>
-          <h1 className="font-display text-white text-3xl mt-5 text-center">
+        <div className="flex flex-col items-center mt-6 mb-6">
+          <h1 className="font-display text-white text-3xl mt-2 text-center">
             Junte-se a nós
           </h1>
           <p className="text-white/75 text-sm mt-2 text-center">
@@ -76,6 +73,14 @@ function CadastroPage() {
             </Link>
           </p>
         </form>
+
+        <div className="mt-8 flex justify-center">
+          <img
+            src={logo}
+            alt="Divina Providência"
+            className="h-12 w-auto opacity-95 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+          />
+        </div>
       </div>
     </div>
   );
