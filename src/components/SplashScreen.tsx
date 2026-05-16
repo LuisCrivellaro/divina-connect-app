@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import logoFull from "@/assets/logo-divina-full.png";
 
 export function SplashScreen() {
+  const navigate = useNavigate();
   const [phase, setPhase] = useState<"in" | "hold" | "out" | "done">("in");
 
   useEffect(() => {
@@ -84,11 +86,17 @@ export function SplashScreen() {
             : "opacity-100 translate-y-0"
         }`}
       >
-        <button className="flex-1 py-3.5 rounded-2xl bg-white text-[#8a5e10] font-semibold text-sm shadow-lg">
+        <button
+          onClick={() => navigate({ to: "/login" })}
+          className="flex-1 py-3.5 rounded-2xl bg-white text-[#8a5e10] font-semibold text-sm shadow-lg active:scale-95 transition"
+        >
           Entrar
         </button>
-        <button className="flex-1 py-3.5 rounded-2xl bg-white/25 backdrop-blur text-white font-semibold text-sm border border-white/30">
-          Explorar
+        <button
+          onClick={() => navigate({ to: "/cadastro" })}
+          className="flex-1 py-3.5 rounded-2xl bg-white/25 backdrop-blur text-white font-semibold text-sm border border-white/30 active:scale-95 transition"
+        >
+          Cadastrar-se
         </button>
       </div>
     </div>
