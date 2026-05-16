@@ -33,8 +33,9 @@ function LoginPage() {
           ← Voltar
         </button>
 
-        <div className="flex flex-col items-center mt-6 mb-8">
-          <h1 className="font-display text-white text-3xl mt-2 text-center">
+        <div className="flex-1 flex flex-col justify-center py-6">
+        <div className="flex flex-col items-center mb-8">
+          <h1 className="font-display text-white text-3xl text-center">
             Bem-vindo de volta
           </h1>
           <p className="text-white/75 text-sm mt-2 text-center">
@@ -42,7 +43,7 @@ function LoginPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="space-y-2">
             <label className="text-white/90 text-xs font-semibold uppercase tracking-wider">
               E-mail
