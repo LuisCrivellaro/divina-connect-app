@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as MainIndexRouteImport } from './routes/_main.index'
 import { Route as MainPerfilRouteImport } from './routes/_main.perfil'
@@ -18,6 +20,16 @@ import { Route as MainAvisosRouteImport } from './routes/_main.avisos'
 import { Route as MainAgendaRouteImport } from './routes/_main.agenda'
 import { Route as MainAdoracaoRouteImport } from './routes/_main.adoracao'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MainRoute = MainRouteImport.update({
   id: '/_main',
   getParentRoute: () => rootRouteImport,
@@ -60,6 +72,8 @@ const MainAdoracaoRoute = MainAdoracaoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
   '/adoracao': typeof MainAdoracaoRoute
   '/agenda': typeof MainAgendaRoute
   '/avisos': typeof MainAvisosRoute
@@ -68,6 +82,8 @@ export interface FileRoutesByFullPath {
   '/perfil': typeof MainPerfilRoute
 }
 export interface FileRoutesByTo {
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
   '/adoracao': typeof MainAdoracaoRoute
   '/agenda': typeof MainAgendaRoute
   '/avisos': typeof MainAvisosRoute
@@ -79,6 +95,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_main': typeof MainRouteWithChildren
+  '/cadastro': typeof CadastroRoute
+  '/login': typeof LoginRoute
   '/_main/adoracao': typeof MainAdoracaoRoute
   '/_main/agenda': typeof MainAgendaRoute
   '/_main/avisos': typeof MainAvisosRoute
@@ -91,6 +109,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cadastro'
+    | '/login'
     | '/adoracao'
     | '/agenda'
     | '/avisos'
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
     | '/perfil'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/cadastro'
+    | '/login'
     | '/adoracao'
     | '/agenda'
     | '/avisos'
@@ -109,6 +131,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_main'
+    | '/cadastro'
+    | '/login'
     | '/_main/adoracao'
     | '/_main/agenda'
     | '/_main/avisos'
@@ -120,10 +144,26 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
+  CadastroRoute: typeof CadastroRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_main': {
       id: '/_main'
       path: ''
@@ -207,6 +247,8 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
+  CadastroRoute: CadastroRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
