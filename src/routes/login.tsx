@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import authBg from "@/assets/auth-bg.jpg";
-import logo from "@/assets/logo-divina.png";
+import logo from "@/assets/logo-divina-horizontal.png";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -33,11 +33,8 @@ function LoginPage() {
           ← Voltar
         </button>
 
-        <div className="flex flex-col items-center mt-10 mb-8">
-          <div className="h-20 w-20 rounded-3xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center shadow-2xl">
-            <img src={logo} alt="Divina Providência" className="h-12 w-auto" />
-          </div>
-          <h1 className="font-display text-white text-3xl mt-5 text-center">
+        <div className="flex flex-col items-center mt-6 mb-8">
+          <h1 className="font-display text-white text-3xl mt-2 text-center">
             Bem-vindo de volta
           </h1>
           <p className="text-white/75 text-sm mt-2 text-center">
