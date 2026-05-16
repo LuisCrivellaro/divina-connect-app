@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
@@ -48,7 +48,12 @@
   --radius: 1.25rem;
 
   /* Light, airy base — white with soft warm gradient */
-  --background: oklch(0.99 0.008 80);
+  --background: linear-gradient(
+  180deg,
+  #fffdf9 0%,
+  #f9f2e6 55%,
+  #f3dfb7 100%
+);;
   --foreground: oklch(0.22 0.03 60);
 
   --surface: oklch(0.985 0.012 80);
