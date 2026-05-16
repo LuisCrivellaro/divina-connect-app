@@ -28,8 +28,9 @@ function CadastroPage() {
           ← Voltar
         </button>
 
-        <div className="flex flex-col items-center mt-6 mb-6">
-          <h1 className="font-display text-white text-3xl mt-2 text-center">
+        <div className="flex-1 flex flex-col justify-center py-6">
+        <div className="flex flex-col items-center mb-6">
+          <h1 className="font-display text-white text-3xl text-center">
             Junte-se a nós
           </h1>
           <p className="text-white/75 text-sm mt-2 text-center">
@@ -37,7 +38,7 @@ function CadastroPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {[
             { k: "nome", label: "Nome completo", type: "text", ph: "Maria da Silva" },
             { k: "email", label: "E-mail", type: "email", ph: "voce@email.com" },
@@ -73,6 +74,7 @@ function CadastroPage() {
             </Link>
           </p>
         </form>
+        </div>
 
         <div className="mt-8 flex justify-center">
           <img
