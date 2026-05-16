@@ -93,6 +93,14 @@ function LoginPage() {
             </Link>
           </p>
         </form>
+
+        <div className="mt-8 flex justify-center">
+          <img
+            src={logo}
+            alt="Divina Providência"
+            className="h-12 w-auto opacity-95 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+          />
+        </div>
       </div>
     </div>
   );
