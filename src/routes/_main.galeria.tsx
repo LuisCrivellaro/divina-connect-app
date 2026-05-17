@@ -25,7 +25,7 @@ function Galeria() {
 
   return (
     <div>
-      <ScreenHeader title="Galeria" subtitle="Momentos da comunidade" />
+      <ScreenHeader title="Galeria" subtitle="Momentos da comunidade" showLogo />
 
       <div className="px-6 mb-4">
         <div className="inline-flex p-1 rounded-2xl bg-card border border-border">
@@ -44,9 +44,9 @@ function Galeria() {
       </div>
 
       {tab === "albuns" ? (
-        <div className="px-6 grid grid-cols-2 gap-3">
+        <div className="px-6 grid grid-cols-2 gap-3 stagger">
           {albums.map((a) => (
-            <article key={a.id} className="rounded-3xl bg-card border border-border overflow-hidden shadow-soft">
+            <article key={a.id} className="rounded-3xl bg-card border border-border overflow-hidden shadow-soft glow-card">
               <div className="aspect-square">
                 <img src={a.capa} alt={a.nome} className="h-full w-full object-cover" loading="lazy" />
               </div>

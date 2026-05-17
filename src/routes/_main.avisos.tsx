@@ -45,13 +45,13 @@ const avisos = [
 function Avisos() {
   return (
     <div>
-      <ScreenHeader title="Avisos" subtitle="Comunicados oficiais" />
+      <ScreenHeader title="Avisos" subtitle="Comunicados oficiais" showLogo />
 
-      <div className="px-6 space-y-3">
+      <div className="px-6 space-y-3 stagger">
         {avisos.map((a) => (
           <article
             key={a.id}
-            className={`rounded-3xl border p-5 shadow-soft transition-all ${
+            className={`rounded-3xl border p-5 shadow-soft transition-all glow-card ${
               a.isNew ? "bg-card border-primary/40" : "bg-card border-border"
             }`}
           >

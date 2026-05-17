@@ -1,19 +1,49 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
-import { Home, Calendar, Bell, Heart, Sparkles, Image as ImageIcon, User } from "lucide-react";
+import { useEffect } from "react";
+import { Home, Calendar, Users, Sparkles, User } from "lucide-react";
 import logo from "@/assets/logo-divina.png";
 
 const tabs = [
-  { to: "/", label: "Início", icon: Home },
+  { to: "/", label: "Home", icon: Home },
   { to: "/agenda", label: "Agenda", icon: Calendar },
-  { to: "/avisos", label: "Avisos", icon: Bell },
+  { to: "/oracao", label: "Comunidade", icon: Users },
   { to: "/adoracao", label: "Adoração", icon: Sparkles },
-  { to: "/oracao", label: "Oração", icon: Heart },
-  { to: "/galeria", label: "Galeria", icon: ImageIcon },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
 export function MobileShell() {
   const location = useLocation();
+
+  // Randomise shine-sweep delays so cards don't all shimmer at the same time
+  useEffect(() => {
+    document.querySelectorAll<HTMLElement>(".glow-card").forEach((el, i) => {
+      el.style.setProperty("--shine-delay", `${(i * 1.4) % 7}s`);
+    });
+  }, [location.pathname]);
+
+  // Mouse spotlight: set CSS vars on the hovered .glow-card
+  useEffect(() => {
+    function onMove(e: MouseEvent) {
+      const card = (e.target as Element).closest<HTMLElement>(".glow-card");
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--gx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      card.style.setProperty("--gy", `${((e.clientY - r.top) / r.height) * 100}%`);
+      card.style.setProperty("--go", "1");
+    }
+    function onOut(e: MouseEvent) {
+      const card = (e.target as Element).closest<HTMLElement>(".glow-card");
+      if (!card || card.contains(e.relatedTarget as Node)) return;
+      card.style.setProperty("--go", "0");
+    }
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseout", onOut);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseout", onOut);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen flex justify-center texture-grain">
       <div className="w-full max-w-[440px] min-h-screen bg-gradient-warm relative pb-28 shadow-elegant">
@@ -23,8 +53,8 @@ export function MobileShell() {
         </div>
 
         {/* Bottom nav */}
-        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-50 px-3 pb-3 pt-2">
-          <div className="bg-card/85 backdrop-blur-xl border border-border rounded-3xl shadow-elegant px-2 py-2">
+        <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-50 px-4 pb-4">
+          <div className="bg-card/80 backdrop-blur-xl border border-border rounded-2xl shadow-elegant px-2 py-1.5">
             <ul className="flex items-center justify-between">
               {tabs.map((t) => {
                 const active = location.pathname === t.to;
@@ -33,19 +63,19 @@ export function MobileShell() {
                   <li key={t.to} className="flex-1">
                     <Link
                       to={t.to}
-                      className="flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-2xl transition-all"
+                      className="flex flex-col items-center gap-0.5 py-1 px-1 rounded-xl transition-all"
                     >
                       <span
-                        className={`flex items-center justify-center h-9 w-9 rounded-2xl transition-all ${
+                        className={`flex items-center justify-center h-8 w-8 rounded-xl transition-all ${
                           active
                             ? "bg-gradient-primary text-primary-foreground shadow-gold"
                             : "text-muted-foreground"
                         }`}
                       >
-                        <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2.5 : 2} />
+                        <Icon className="h-4 w-4" strokeWidth={active ? 2.5 : 1.75} />
                       </span>
                       <span
-                        className={`text-[10px] font-medium ${
+                        className={`text-[9px] font-medium ${
                           active ? "text-primary" : "text-muted-foreground"
                         }`}
                       >
@@ -79,8 +109,8 @@ export function ScreenHeader({
           <img src={logo} alt="Divina Providência" className="h-14 w-auto" />
         </div>
       )}
-      <h1 className="font-display text-3xl text-foreground">{title}</h1>
-      {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
+      <h1 className="font-display text-3xl text-foreground text-center">{title}</h1>
+      {subtitle && <p className="text-sm text-muted-foreground mt-1 text-center">{subtitle}</p>}
     </header>
   );
 }

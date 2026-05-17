@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SplashRouteImport } from './routes/splash'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as MainRouteImport } from './routes/_main'
@@ -20,6 +21,11 @@ import { Route as MainAvisosRouteImport } from './routes/_main.avisos'
 import { Route as MainAgendaRouteImport } from './routes/_main.agenda'
 import { Route as MainAdoracaoRouteImport } from './routes/_main.adoracao'
 
+const SplashRoute = SplashRouteImport.update({
+  id: '/splash',
+  path: '/splash',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/splash': typeof SplashRoute
   '/adoracao': typeof MainAdoracaoRoute
   '/agenda': typeof MainAgendaRoute
   '/avisos': typeof MainAvisosRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/splash': typeof SplashRoute
   '/adoracao': typeof MainAdoracaoRoute
   '/agenda': typeof MainAgendaRoute
   '/avisos': typeof MainAvisosRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteWithChildren
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/splash': typeof SplashRoute
   '/_main/adoracao': typeof MainAdoracaoRoute
   '/_main/agenda': typeof MainAgendaRoute
   '/_main/avisos': typeof MainAvisosRoute
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/login'
+    | '/splash'
     | '/adoracao'
     | '/agenda'
     | '/avisos'
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
   to:
     | '/cadastro'
     | '/login'
+    | '/splash'
     | '/adoracao'
     | '/agenda'
     | '/avisos'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/_main'
     | '/cadastro'
     | '/login'
+    | '/splash'
     | '/_main/adoracao'
     | '/_main/agenda'
     | '/_main/avisos'
@@ -146,10 +158,18 @@ export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
   CadastroRoute: typeof CadastroRoute
   LoginRoute: typeof LoginRoute
+  SplashRoute: typeof SplashRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/splash': {
+      id: '/splash'
+      path: '/splash'
+      fullPath: '/splash'
+      preLoaderRoute: typeof SplashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -249,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
   CadastroRoute: CadastroRoute,
   LoginRoute: LoginRoute,
+  SplashRoute: SplashRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ScreenHeader } from "@/components/MobileShell";
+import { useDragScroll } from "@/hooks/useDragScroll";
 import logo from "@/assets/logo-divina.png";
 import community1 from "@/assets/community-1.jpg";
 import community2 from "@/assets/community-2.jpg";
 import community3 from "@/assets/community-3.jpg";
 import community4 from "@/assets/community-4.jpg";
-import { Bell, Calendar, ChevronRight, Heart, Sparkles } from "lucide-react";
+import { Bell, ChevronRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_main/")({
   component: Dashboard,
@@ -30,27 +30,26 @@ const avisos = [
 ];
 
 function Dashboard() {
+  const carouselRef = useDragScroll();
+
   return (
-    <div className="pb-4">
+    <div className="pb-4 stagger">
       {/* Header */}
-      <header className="px-6 pt-12 pb-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="Divina Providência" className="h-10 w-auto" />
-        </div>
-        <button className="relative h-10 w-10 rounded-full bg-card border border-border flex items-center justify-center">
+      <header className="px-6 pt-12 pb-4 relative flex items-center justify-center">
+        <img src={logo} alt="Divina Providência" className="h-14 w-auto" />
+        <button className="absolute right-6 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-card border border-border flex items-center justify-center">
           <Bell className="h-4 w-4 text-foreground" />
           <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary" />
         </button>
       </header>
 
       <div className="px-6">
-        <p className="text-sm text-muted-foreground">Que a paz esteja contigo,</p>
         <h2 className="font-display text-3xl text-foreground">Bem-vindo, Maria</h2>
       </div>
 
       {/* Verse of the day */}
       <div className="px-6 mt-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep p-6 shadow-gold">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep p-6 shadow-gold glow-card">
           <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
           <p className="text-xs uppercase tracking-widest text-primary-foreground/80 font-medium">
             Versículo do Dia
@@ -70,14 +69,18 @@ function Dashboard() {
             Ver todos <ChevronRight className="h-3 w-3" />
           </a>
         </div>
-        <div className="flex gap-3 overflow-x-auto px-6 pb-2 snap-x">
+        <div
+          ref={carouselRef}
+          className="flex gap-3 overflow-x-auto px-6 pb-2 select-none"
+          style={{ cursor: "grab" }}
+        >
           {events.map((e) => (
             <article
               key={e.id}
-              className="snap-start shrink-0 w-56 rounded-3xl bg-card border border-border overflow-hidden shadow-soft"
+              className="shrink-0 w-56 rounded-3xl bg-card border border-border overflow-hidden shadow-soft glow-card"
             >
               <div className="relative h-32">
-                <img src={e.img} alt={e.title} className="h-full w-full object-cover" loading="lazy" />
+                <img src={e.img} alt={e.title} className="h-full w-full object-cover" loading="lazy" draggable={false} />
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
                 <span className="absolute top-2 left-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/90 text-primary-foreground font-medium">
                   {e.type}
@@ -94,7 +97,7 @@ function Dashboard() {
 
       {/* Adoração card */}
       <section className="px-6 mt-6">
-        <div className="rounded-3xl bg-card border border-border p-5 flex items-center gap-4 shadow-soft">
+        <div className="rounded-3xl bg-card border border-border p-5 flex items-center gap-4 shadow-soft glow-card">
           <div className="h-12 w-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-gold">
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
@@ -111,11 +114,11 @@ function Dashboard() {
         <div className="flex items-center justify-between px-6 mb-3">
           <h3 className="font-display text-xl text-foreground">Avisos recentes</h3>
         </div>
-        <div className="px-6 space-y-2">
+        <div className="px-6 space-y-2 stagger">
           {avisos.map((a) => (
             <div
               key={a.id}
-              className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border"
+              className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border glow-card"
             >
               <div className="h-9 w-9 rounded-xl bg-primary/15 flex items-center justify-center">
                 <Bell className="h-4 w-4 text-primary" />
@@ -139,7 +142,7 @@ function Dashboard() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-display text-xl text-foreground">Pedidos de oração</h3>
         </div>
-        <div className="rounded-3xl bg-card border border-border p-5 shadow-soft">
+        <div className="rounded-3xl bg-card border border-border p-5 shadow-soft glow-card">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-display text-sm">
               JS
