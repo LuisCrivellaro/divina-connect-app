@@ -5,6 +5,8 @@ import community1 from "@/assets/community-1.jpg";
 import community2 from "@/assets/community-2.jpg";
 import community3 from "@/assets/community-3.jpg";
 import community4 from "@/assets/community-4.jpg";
+import community5 from "@/assets/community-5.jpg";
+import community6 from "@/assets/community-6.jpg";
 import { Bell, ChevronRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_main/")({
@@ -19,8 +21,8 @@ export const Route = createFileRoute("/_main/")({
 
 const events = [
   { id: 1, title: "Grupo de Oração", date: "Qui · 19h30", img: community1, type: "Oração" },
-  { id: 2, title: "Missa da Comunidade", date: "Dom · 10h00", img: community3, type: "Missa" },
-  { id: 3, title: "Acampamento de Verão", date: "15-17 Fev", img: community4, type: "Retiro" },
+  { id: 2, title: "Missa da Comunidade", date: "Dom · 10h00", img: community4, type: "Missa" },
+  { id: 3, title: "Acampamento Senior", date: "15-17 Fev", img: community3, type: "Retiro" },
 ];
 
 const avisos = [
@@ -167,12 +169,12 @@ function Dashboard() {
       </section>
 
       {/* Galeria preview */}
-      <section className="mt-8">
+      <section className="mt-8"> 
         <div className="flex items-center justify-between px-6 mb-3">
           <h3 className="font-display text-xl text-foreground">Momentos</h3>
         </div>
         <div className="grid grid-cols-3 gap-2 px-6">
-          {[community1, community2, community3, community4, community1, community2].map((src, i) => (
+          {[community1, community2, community3, community4, community5, community6].map((src, i) => (
             <div key={i} className="aspect-square rounded-2xl overflow-hidden bg-muted">
               <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
             </div>

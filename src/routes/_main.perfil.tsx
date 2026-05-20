@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ScreenHeader } from "@/components/MobileShell";
-import { Bell, Calendar, ChevronRight, LogOut, Settings, Shield, X, Check } from "lucide-react";
-import { useState } from "react";
+import { Bell, Calendar, Camera, ChevronRight, LogOut, Settings, Shield, X, Check } from "lucide-react";
+import { useRef, useState } from "react";
+import { useSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/_main/perfil")({
   component: Perfil,
@@ -20,9 +21,9 @@ function Toggle({ value, onChange }: { value: boolean; onChange: () => void }) {
   return (
     <button
       onClick={onChange}
-      className={`relative w-11 h-6 rounded-full transition-colors ${value ? "bg-gradient-primary" : "bg-muted"}`}
+      className={`relative inline-flex items-center shrink-0 w-11 h-6 rounded-full transition-colors ${value ? "bg-gradient-primary" : "bg-muted"}`}
     >
-      <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${value ? "translate-x-5" : "translate-x-0.5"}`} />
+      <span className={`absolute left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${value ? "translate-x-5" : "translate-x-0"}`} />
     </button>
   );
 }
@@ -48,8 +49,23 @@ function Perfil() {
   const [panel, setPanel] = useState<Panel>(null);
   const [notif, setNotif] = useState({ eventos: true, avisos: true, oracao: false, missa: true });
   const [priv, setPriv] = useState({ pedidosPublicos: true, perfilVisivel: true, compartilharPresenca: false });
-  const [conf, setConf] = useState({ modoEscuro: false, reducaoMovimento: false, tamanhoFonte: false });
+  const { cfg: conf, toggle: toggleConf } = useSettings();
   const [sairConfirm, setSairConfirm] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(() => localStorage.getItem("divina:photoUrl"));
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const url = reader.result as string;
+      setPhotoUrl(url);
+      localStorage.setItem("divina:photoUrl", url);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
 
   const items = [
     { icon: Bell, label: "Notificações", panel: "notificacoes" as Panel },
@@ -63,25 +79,49 @@ function Perfil() {
       <ScreenHeader title="Perfil" showLogo />
 
       {/* Card do usuário */}
-      <section className="px-6">
-        <div className="rounded-3xl bg-gradient-gold-deep p-6 shadow-gold relative overflow-hidden glow-card">
+      <section className="px-4 sm:px-6">
+        <div className="rounded-3xl bg-gradient-gold-deep p-5 sm:p-6 shadow-gold relative overflow-hidden glow-card">
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
           <div className="flex items-center gap-4 relative">
-            <div className="h-20 w-20 rounded-full bg-card border-4 border-primary-foreground/30 flex items-center justify-center font-display text-3xl text-primary">
-              MA
+            {/* Avatar com botão de foto */}
+            <div className="relative shrink-0">
+              <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-card border-4 border-primary-foreground/30 overflow-hidden flex items-center justify-center font-display text-3xl text-primary">
+                {photoUrl ? (
+                  <img src={photoUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
+                ) : (
+                  "MA"
+                )}
+              </div>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                aria-label="Alterar foto de perfil"
+                className="absolute bottom-0 right-0 h-7 w-7 rounded-full bg-primary flex items-center justify-center shadow-gold border-2 border-card transition-transform active:scale-90"
+              >
+                <Camera className="h-3.5 w-3.5 text-primary-foreground" />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="user"
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
             </div>
-            <div>
-              <h2 className="font-display text-2xl text-primary-foreground">Maria Andrade</h2>
+
+            <div className="min-w-0">
+              <h2 className="font-display text-xl sm:text-2xl text-primary-foreground truncate">Luis Filipe Crivellaro</h2>
               <span className="inline-flex items-center gap-1.5 mt-1 text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground">
-                <Shield className="h-3 w-3" /> Membro Comprometido
+                <Shield className="h-3 w-3 shrink-0" /> Membro Comprometido
               </span>
+              <p className="text-[11px] text-primary-foreground/60 mt-2">Toque na foto para alterar</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Menu */}
-      <section className="px-6 mt-6 space-y-2">
+      <section className="px-4 sm:px-6 mt-6 space-y-2">
         {items.map((it) => {
           const Icon = it.icon;
           return (
@@ -116,8 +156,8 @@ function Perfil() {
             { key: "oracao", label: "Pedidos de oração", sub: "Quando alguém posta um pedido" },
             { key: "missa", label: "Lembretes de missa", sub: "Notificação antes da missa" },
           ] as const).map((n) => (
-            <div key={n.key} className="flex items-center justify-between py-4 border-b border-border last:border-0">
-              <div>
+            <div key={n.key} className="flex items-center gap-3 py-4 border-b border-border last:border-0">
+              <div className="flex-1 min-w-0">
                 <p className="text-sm text-foreground font-medium">{n.label}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{n.sub}</p>
               </div>
@@ -157,8 +197,8 @@ function Perfil() {
             { key: "perfilVisivel", label: "Perfil visível na comunidade", sub: "Outros membros podem te ver" },
             { key: "compartilharPresenca", label: "Compartilhar presença", sub: "Notificar quando confirmar evento" },
           ] as const).map((p) => (
-            <div key={p.key} className="flex items-center justify-between py-4 border-b border-border last:border-0">
-              <div>
+            <div key={p.key} className="flex items-center gap-3 py-4 border-b border-border last:border-0">
+              <div className="flex-1 min-w-0">
                 <p className="text-sm text-foreground font-medium">{p.label}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{p.sub}</p>
               </div>
@@ -179,12 +219,12 @@ function Perfil() {
             { key: "reducaoMovimento", label: "Reduzir animações", sub: "Desativa efeitos de movimento" },
             { key: "tamanhoFonte", label: "Fonte maior", sub: "Aumenta o tamanho do texto" },
           ] as const).map((c) => (
-            <div key={c.key} className="flex items-center justify-between py-4 border-b border-border last:border-0">
-              <div>
+            <div key={c.key} className="flex items-center gap-3 py-4 border-b border-border last:border-0">
+              <div className="flex-1 min-w-0">
                 <p className="text-sm text-foreground font-medium">{c.label}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{c.sub}</p>
               </div>
-              <Toggle value={conf[c.key]} onChange={() => setConf((v) => ({ ...v, [c.key]: !v[c.key] }))} />
+              <Toggle value={conf[c.key]} onChange={() => toggleConf(c.key)} />
             </div>
           ))}
         </div>

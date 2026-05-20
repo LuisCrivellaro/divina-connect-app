@@ -4,6 +4,7 @@ import { useDragScroll } from "@/hooks/useDragScroll";
 import community1 from "@/assets/community-1.jpg";
 import community3 from "@/assets/community-3.jpg";
 import community4 from "@/assets/community-4.jpg";
+import community5 from "@/assets/community-5.jpg";
 import { MapPin, Clock, Check, Users, Flame, Search } from "lucide-react";
 import { useState } from "react";
 
