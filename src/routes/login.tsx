@@ -35,9 +35,6 @@ function LoginPage() {
             <h1 className="font-display text-white text-3xl text-center">
               Bem-vindo de volta
             </h1>
-            <p className="text-white/75 text-sm mt-2 text-center">
-              Entre para continuar sua jornada na comunidade
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">

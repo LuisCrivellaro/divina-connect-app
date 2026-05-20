@@ -22,7 +22,7 @@ function SplashPage() {
       className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-700 ease-out ${
         phase === "out" ? "opacity-0 scale-105" : "opacity-100 scale-100"
       }`}
-      style={{ backgroundColor: "#D29320" }}
+      style={{ background: "radial-gradient(ellipse 60% 40% at 50% 45%, #e8ac40 0%, #D29320 70%)" }}
       aria-hidden={phase === "out"}
     >
       <div
@@ -71,7 +71,7 @@ function SplashPage() {
       </div>
 
       <div
-        className={`absolute bottom-8 left-6 right-6 flex gap-3 transition-all duration-700 delay-200 ${
+        className={`absolute bottom-8 left-8 right-8 flex gap-3 transition-all duration-700 delay-200 ${
           phase === "in"
             ? "opacity-0 translate-y-4"
             : phase === "out"
@@ -81,13 +81,13 @@ function SplashPage() {
       >
         <button
           onClick={() => navigate({ to: "/login" })}
-          className="flex-1 py-3.5 rounded-2xl bg-white text-[#8a5e10] font-semibold text-sm shadow-lg active:scale-95 transition"
+          className="flex-1 py-2.5 rounded-2xl bg-white text-[#8a5e10] font-semibold text-sm shadow-lg active:scale-95 transition"
         >
           Entrar
         </button>
         <button
           onClick={() => navigate({ to: "/cadastro" })}
-          className="flex-1 py-3.5 rounded-2xl bg-white/25 backdrop-blur text-white font-semibold text-sm border border-white/30 active:scale-95 transition"
+          className="flex-1 py-2.5 rounded-2xl bg-white/25 backdrop-blur text-white font-semibold text-sm border border-white/30 active:scale-95 transition"
         >
           Cadastrar-se
         </button>
