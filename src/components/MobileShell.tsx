@@ -1,12 +1,12 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Home, Calendar, Users, Sparkles, User } from "lucide-react";
+import { Home, Calendar, Shield, Sparkles, User } from "lucide-react";
 import logo from "@/assets/logo-divina.png";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
   { to: "/agenda", label: "Agenda", icon: Calendar },
-  { to: "/oracao", label: "Comunidade", icon: Users },
+  { to: "/oracao", label: "1º Elo", icon: Shield },
   { to: "/adoracao", label: "Adoração", icon: Sparkles },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;

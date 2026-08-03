@@ -1,282 +1,662 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { logo } from "@/components/MobileShell";
-import { useDragScroll } from "@/hooks/useDragScroll";
-import community1 from "@/assets/community-1.jpg";
-import community2 from "@/assets/community-2.jpg";
-import community3 from "@/assets/community-3.jpg";
-import community4 from "@/assets/community-4.jpg";
-import { Plus, X, Search, Users, Music, BookOpen, Baby, Heart } from "lucide-react";
-import { useState } from "react";
+import {
+  Bell,
+  BellOff,
+  Check,
+  X,
+  Play,
+  Pause,
+  Video,
+  Clock,
+  MapPin,
+  Mic,
+  ChevronRight,
+  ChevronDown,
+  SendHorizonal,
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_main/oracao")({
-  component: Oracao,
-  head: () => ({ meta: [{ title: "Comunidade — Divina Providência" }] }),
+  component: MembrosElo,
+  head: () => ({ meta: [{ title: "Membros do 1º Elo — Divina Providência" }] }),
 });
 
-type Pedido = {
+type RSVP = "confirmado" | "ausente" | null;
+
+type Formacao = {
   id: number;
-  nome: string;
-  iniciais: string;
-  tempo: string;
-  texto: string;
-  categoria: string;
-  rezando: number;
-  apoio: number;
-  meRezando?: boolean;
-  meApoio?: boolean;
+  dia: string;
+  mes: string;
+  ano: string;
+  diaSemana: string;
+  horario: string;
+  local: string;
+  tema: string;
+  tipo: "proxima" | "passada";
+  pregador: string;
+  audioUrl?: string;
+  videoUrl?: string;
+  duracao?: string;
 };
 
-const grupos = [
-  { nome: "Jovens da Fé", membros: 34, icon: Heart, img: community2 },
-  { nome: "Louvor", membros: 18, icon: Music, img: community1 },
-  { nome: "Catequese", membros: 52, icon: BookOpen, img: community3 },
-  { nome: "Pastoral Familiar", membros: 29, icon: Users, img: community4 },
-  { nome: "Mães em Oração", membros: 41, icon: Baby, img: community2 },
-];
-
-const initialPedidos: Pedido[] = [
+const formacoes: Formacao[] = [
   {
     id: 1,
-    nome: "João Silva",
-    iniciais: "JS",
-    tempo: "há 1h",
-    texto: "Peço orações pela saúde da minha mãe que está internada.",
-    categoria: "Saúde",
-    rezando: 24,
-    apoio: 12,
+    dia: "10",
+    mes: "AGO",
+    ano: "2026",
+    diaSemana: "Segunda-feira",
+    horario: "19h30",
+    local: "Salão Paroquial",
+    tema: "A Vida na Graça — 4ª Formação",
+    tipo: "proxima",
+    pregador: "Diác. Marcos Oliveira",
   },
   {
     id: 2,
-    nome: "Ana Maria",
-    iniciais: "AM",
-    tempo: "há 3h",
-    texto: "Pelas famílias da nossa comunidade que enfrentam dificuldades financeiras.",
-    categoria: "Família",
-    rezando: 47,
-    apoio: 33,
+    dia: "24",
+    mes: "AGO",
+    ano: "2026",
+    diaSemana: "Segunda-feira",
+    horario: "19h30",
+    local: "Salão Paroquial",
+    tema: "Vocação e Missão — 5ª Formação",
+    tipo: "proxima",
+    pregador: "Pe. Ricardo Souza",
   },
   {
     id: 3,
-    nome: "Pedro Costa",
-    iniciais: "PC",
-    tempo: "ontem",
-    texto: "Por discernimento em uma decisão importante na minha vida profissional.",
-    categoria: "Trabalho",
-    rezando: 18,
-    apoio: 9,
+    dia: "27",
+    mes: "JUL",
+    ano: "2026",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Fé e Compromisso — 3ª Formação",
+    tipo: "passada",
+    pregador: "Diác. Marcos Oliveira",
+    duracao: "1h 12min",
+    audioUrl: "#",
   },
   {
     id: 4,
-    nome: "Lúcia Ferreira",
-    iniciais: "LF",
-    tempo: "há 2 dias",
-    texto: "Pelos jovens da comunidade — que encontrem propósito e fé.",
-    categoria: "Jovens",
-    rezando: 56,
-    apoio: 41,
+    dia: "13",
+    mes: "JUL",
+    ano: "2026",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "O Espírito Santo na Nossa Vida — 2ª Formação",
+    tipo: "passada",
+    pregador: "Pe. Ricardo Souza",
+    duracao: "58min",
+    audioUrl: "#",
+    videoUrl: "#",
+  },
+  {
+    id: 5,
+    dia: "29",
+    mes: "JUN",
+    ano: "2026",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Introdução ao 1º Elo — 1ª Formação",
+    tipo: "passada",
+    pregador: "Diác. Carlos Ferreira",
+    duracao: "1h 05min",
+    audioUrl: "#",
+  },
+  // 2025
+  {
+    id: 6,
+    dia: "14",
+    mes: "DEZ",
+    ano: "2025",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Natal e Encarnação — 12ª Formação",
+    tipo: "passada",
+    pregador: "Pe. Ricardo Souza",
+    duracao: "1h 03min",
+    audioUrl: "#",
+  },
+  {
+    id: 7,
+    dia: "30",
+    mes: "NOV",
+    ano: "2025",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Esperança e Advento — 11ª Formação",
+    tipo: "passada",
+    pregador: "Diác. Marcos Oliveira",
+    duracao: "52min",
+    audioUrl: "#",
+    videoUrl: "#",
+  },
+  {
+    id: 8,
+    dia: "16",
+    mes: "NOV",
+    ano: "2025",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "A Cruz e a Ressurreição — 10ª Formação",
+    tipo: "passada",
+    pregador: "Pe. Ricardo Souza",
+    duracao: "1h 08min",
+    audioUrl: "#",
+  },
+  {
+    id: 9,
+    dia: "02",
+    mes: "NOV",
+    ano: "2025",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Memória e Comunhão dos Santos — 9ª Formação",
+    tipo: "passada",
+    pregador: "Diác. Carlos Ferreira",
+    duracao: "55min",
+    audioUrl: "#",
+  },
+  {
+    id: 10,
+    dia: "19",
+    mes: "OUT",
+    ano: "2025",
+    diaSemana: "Domingo",
+    horario: "10h00",
+    local: "Salão Paroquial",
+    tema: "Oração e Silêncio — 8ª Formação",
+    tipo: "passada",
+    pregador: "Diác. Marcos Oliveira",
+    duracao: "1h 01min",
+    audioUrl: "#",
+    videoUrl: "#",
   },
 ];
 
-const categoriaColors: Record<string, string> = {
-  Saúde: "bg-rose-400/15 text-rose-500",
-  Família: "bg-amber-400/15 text-amber-600",
-  Trabalho: "bg-blue-400/15 text-blue-500",
-  Jovens: "bg-primary/15 text-primary",
-};
+// Date box — same design for both próximas and anteriores
+function DateBox({ mes, dia, ano }: { mes: string; dia: string; ano: string }) {
+  return (
+    <div className="shrink-0 w-12 rounded-2xl overflow-hidden border border-primary/25 shadow-sm">
+      <div className="bg-gradient-primary px-1 py-1 text-center">
+        <span className="text-[9px] font-bold text-primary-foreground uppercase tracking-wider leading-none">
+          {mes}
+        </span>
+      </div>
+      <div className="bg-primary/8 flex flex-col items-center pt-1.5 pb-2 px-1">
+        <span className="font-display text-2xl text-primary leading-none">{dia}</span>
+        <span className="text-[9px] text-primary/50 leading-none mt-1">{ano}</span>
+      </div>
+    </div>
+  );
+}
 
-function Oracao() {
-  const [pedidos, setPedidos] = useState(initialPedidos);
-  const [open, setOpen] = useState(false);
+function AudioPlayer({ formacao }: { formacao: Formacao }) {
+  const [playing, setPlaying] = useState(false);
+
+  return (
+    <div className="mt-3 space-y-2">
+      <div className="rounded-2xl bg-primary/8 border border-primary/20 p-3">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setPlaying(!playing)}
+            className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center shrink-0 shadow-gold"
+          >
+            {playing ? (
+              <Pause className="h-4 w-4 text-white" />
+            ) : (
+              <Play className="h-4 w-4 text-white ml-0.5" />
+            )}
+          </button>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-foreground">Áudio da formação</p>
+            <p className="text-xs text-muted-foreground">{formacao.duracao}</p>
+            <div className="mt-1.5 h-1 bg-border rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-primary rounded-full transition-all duration-1000"
+                style={{ width: playing ? "30%" : "0%" }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {formacao.videoUrl && (
+        <button className="w-full rounded-2xl border border-border bg-muted/50 py-2.5 flex items-center gap-2 px-4 text-sm text-muted-foreground font-medium">
+          <Video className="h-3.5 w-3.5 shrink-0" />
+          <span>Assistir gravação em vídeo</span>
+          <ChevronRight className="h-3.5 w-3.5 ml-auto" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function JustificativaModal({
+  tema,
+  data,
+  onSave,
+  onClose,
+}: {
+  tema: string;
+  data: string;
+  onSave: (text: string) => void;
+  onClose: () => void;
+}) {
   const [text, setText] = useState("");
-  const [categoria, setCategoria] = useState("Família");
-  const gruposRef = useDragScroll();
 
-  const react = (id: number, type: "rezando" | "apoio") => {
-    setPedidos((p) =>
-      p.map((x) => {
-        if (x.id !== id) return x;
-        const key = type === "rezando" ? "meRezando" : "meApoio";
-        const active = !x[key];
-        return { ...x, [key]: active, [type]: x[type] + (active ? 1 : -1) };
-      })
-    );
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 backdrop-blur-sm">
+      <div className="w-full max-w-110 bg-card border-t border-border rounded-t-3xl px-6 pt-4 pb-28 shadow-elegant animate-in slide-in-from-bottom">
+        {/* Drag handle */}
+        <div className="flex justify-center mb-4">
+          <div className="h-1 w-10 rounded-full bg-border" />
+        </div>
+
+        {/* Header centralizado */}
+        <div className="relative flex items-center justify-center mb-1">
+          <h3 className="font-display text-xl text-foreground">Justificativa de Ausência</h3>
+          <button
+            onClick={onClose}
+            className="absolute right-0 h-8 w-8 rounded-full bg-muted flex items-center justify-center"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <p className="text-sm text-muted-foreground text-center mb-5">
+          {tema} — {data}
+        </p>
+
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Descreva o motivo da sua ausência..."
+          className="w-full h-20 rounded-2xl bg-input border border-border p-4 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:border-primary"
+          autoFocus
+        />
+        <button
+          onClick={() => {
+            onSave(text);
+            onClose();
+          }}
+          className="w-full mt-3 py-3 rounded-2xl bg-gradient-primary text-primary-foreground font-semibold shadow-gold flex items-center justify-center gap-2"
+        >
+          <SendHorizonal className="h-4 w-4" />
+          Enviar justificativa
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function MembrosElo() {
+  const [rsvps, setRsvps] = useState<Record<number, RSVP>>({});
+  const [justificativas, setJustificativas] = useState<Record<number, string>>({});
+  const [justificativaAberta, setJustificativaAberta] = useState<number | null>(null);
+  const [notificacoes, setNotificacoes] = useState(false);
+  const [showNotifPrompt, setShowNotifPrompt] = useState(false);
+  const [openYears, setOpenYears] = useState<Set<number>>(new Set([2026]));
+
+  useEffect(() => {
+    const jaPergunhou = localStorage.getItem("divina:elo:notif-asked");
+    if (!jaPergunhou) {
+      const t = setTimeout(() => setShowNotifPrompt(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+  const [openFormacaoId, setOpenFormacaoId] = useState<number | null>(null);
+
+  const proximas = formacoes.filter((f) => f.tipo === "proxima");
+  const passadas = formacoes.filter((f) => f.tipo === "passada");
+
+  const formacoesByYear = passadas.reduce<Record<number, Formacao[]>>((acc, f) => {
+    const year = parseInt(f.ano);
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(f);
+    return acc;
+  }, {});
+  const anos = Object.keys(formacoesByYear).map(Number).sort((a, b) => b - a);
+
+  const toggleYear = (year: number) => {
+    setOpenYears((prev) => {
+      const next = new Set(prev);
+      if (next.has(year)) next.delete(year);
+      else next.add(year);
+      return next;
+    });
   };
 
-  const submit = () => {
-    if (!text.trim()) return;
-    setPedidos((p) => [
-      { id: Date.now(), nome: "Você", iniciais: "VC", tempo: "agora", texto: text.trim(), categoria, rezando: 0, apoio: 0 },
-      ...p,
-    ]);
-    setText("");
-    setOpen(false);
+  const toggleFormacao = (id: number) => {
+    setOpenFormacaoId((prev) => (prev === id ? null : id));
   };
+
+  const responderPrompt = (ativar: boolean) => {
+    localStorage.setItem("divina:elo:notif-asked", "true");
+    setShowNotifPrompt(false);
+    if (ativar) {
+      setNotificacoes(true);
+      toast.success("Notificações ativadas", {
+        description: "Você será avisado antes de cada formação do 1º Elo.",
+      });
+    }
+  };
+
+  const toggleNotificacoes = () => {
+    const novoEstado = !notificacoes;
+    setNotificacoes(novoEstado);
+    if (novoEstado) {
+      toast.success("Notificações ativadas", {
+        description: "Você será avisado antes de cada formação do 1º Elo.",
+      });
+    }
+  };
+
+  const handleRSVP = (id: number, value: RSVP) => {
+    setRsvps((prev) => ({ ...prev, [id]: value }));
+    if (value === "ausente") {
+      setJustificativaAberta(id);
+    }
+  };
+
+  const salvarJustificativa = (id: number, text: string) => {
+    if (text.trim()) {
+      setJustificativas((prev) => ({ ...prev, [id]: text.trim() }));
+    }
+  };
+
+  const formacaoAberta = formacoes.find((f) => f.id === justificativaAberta);
 
   return (
     <div className="relative pb-4">
 
       {/* Header */}
-      <header className="px-6 pt-12 pb-4 flex items-center justify-between">
-        <img src={logo} alt="Divina Providência" className="h-14 w-auto" />
-        <button className="h-10 w-10 rounded-full bg-card border border-border flex items-center justify-center shadow-soft">
-          <Search className="h-4 w-4 text-foreground" />
+      <header className="px-6 pt-12 pb-4 flex items-start justify-between">
+        <div>
+          <img src={logo} alt="Divina Providência" className="h-14 w-auto mb-1.5" />
+          <h1 className="font-display text-2xl text-foreground">Membros do 1º Elo</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Formação e compromisso</p>
+        </div>
+        <button
+          onClick={toggleNotificacoes}
+          className={`mt-1 h-10 w-10 rounded-full border flex items-center justify-center shadow-soft transition-all ${
+            notificacoes ? "bg-primary/10 border-primary/30" : "bg-card border-border"
+          }`}
+          aria-label={notificacoes ? "Desativar notificações" : "Ativar notificações"}
+        >
+          {notificacoes ? (
+            <Bell className="h-4 w-4 text-primary" />
+          ) : (
+            <BellOff className="h-4 w-4 text-muted-foreground" />
+          )}
         </button>
       </header>
 
-      {/* Intenção da semana */}
-      <div className="px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep p-5 shadow-gold glow-card">
-          <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
-          <p className="text-[10px] uppercase tracking-widest text-primary-foreground/70 font-semibold">
-            Intenção da Semana
+      {/* Versículo — tamanhos intocados */}
+      <div className="px-6 mb-6">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep px-6 py-5 shadow-gold glow-card">
+          <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="absolute -left-3 -top-1 font-display text-9xl text-white/10 leading-none select-none pointer-events-none">
+            "
+          </div>
+          <p className="text-[10px] uppercase tracking-widest text-primary-foreground/55 font-semibold mb-3">
+            Versículo do 1º Elo
           </p>
-          <p className="font-display text-xl text-primary-foreground mt-1.5 italic leading-snug">
-            "Pelos enfermos e suas famílias — que encontrem força e consolo em Deus."
+          <p className="font-display text-[17px] text-primary-foreground leading-relaxed italic relative z-10">
+            "E se alguém prevalecer contra um, dois lhe resistirão; e o cordão de três dobras não se quebra tão depressa."
           </p>
-          <div className="flex items-center gap-3 mt-4">
-            <div className="flex -space-x-2">
-              {["JS", "AM", "PC"].map((i) => (
-                <div key={i} className="h-7 w-7 rounded-full bg-white/30 border-2 border-white/50 flex items-center justify-center text-[9px] text-white font-bold">
-                  {i}
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-primary-foreground/80">+128 orando juntos</p>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="h-px flex-1 bg-white/20" />
+            <p className="text-[11px] text-primary-foreground/65 font-semibold tracking-wide">
+              Eclesiastes 4:12
+            </p>
+            <div className="h-px flex-1 bg-white/20" />
           </div>
         </div>
       </div>
 
-      {/* Grupos */}
-      <section className="mt-6">
-        <div className="flex items-center justify-between px-6 mb-3">
-          <h3 className="font-display text-lg text-foreground">Grupos da comunidade</h3>
-          <span className="text-xs text-primary">{grupos.length} grupos</span>
+      {/* Próximas formações */}
+      <section className="mb-6">
+        <div className="px-6 mb-3 flex items-center justify-between">
+          <h3 className="font-display text-lg text-foreground">Próximas Formações</h3>
+          <span className="text-sm text-primary font-medium">{proximas.length} agendadas</span>
         </div>
-        <div
-          ref={gruposRef}
-          className="flex gap-3 overflow-x-auto px-6 pb-1 select-none"
-          style={{ cursor: "grab" }}
-        >
-          {grupos.map((g) => {
-            const Icon = g.icon;
+        <div className="px-6 space-y-3">
+          {proximas.map((f) => {
+            const rsvp = rsvps[f.id] ?? null;
             return (
-              <div key={g.nome} className="shrink-0 flex flex-col items-center gap-2 w-20">
-                <div className="relative h-16 w-16 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-soft glow-card">
-                  <img src={g.img} alt={g.nome} className="h-full w-full object-cover" draggable={false} />
-                  <div className="absolute inset-0 bg-primary/20" />
-                  <div className="absolute bottom-1 right-1 h-5 w-5 rounded-lg bg-primary flex items-center justify-center">
-                    <Icon className="h-2.5 w-2.5 text-white" />
+              <article key={f.id} className="rounded-3xl bg-card border border-border p-4 shadow-soft glow-card">
+                <div className="flex items-start gap-3">
+                  <DateBox mes={f.mes} dia={f.dia} ano={f.ano} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-base font-semibold text-foreground leading-snug">{f.tema}</p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      <Clock className="h-3 w-3 text-muted-foreground shrink-0" />
+                      <p className="text-sm text-muted-foreground">
+                        {f.diaSemana}, {f.horario}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <MapPin className="h-3 w-3 text-muted-foreground shrink-0" />
+                      <p className="text-sm text-muted-foreground">{f.local}</p>
+                    </div>
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <Mic className="h-3 w-3 text-primary shrink-0" />
+                      <p className="text-sm text-primary font-medium">{f.pregador}</p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-[10px] text-foreground font-medium text-center leading-tight">{g.nome}</p>
-                <p className="text-[9px] text-muted-foreground -mt-1.5">{g.membros} membros</p>
+
+                {/* RSVP */}
+                <div className="mt-3 pt-3 border-t border-border">
+                  {rsvp === null && (
+                    <>
+                      <p className="text-sm text-muted-foreground mb-2">Confirme sua presença:</p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleRSVP(f.id, "confirmado")}
+                          className="flex-1 py-2 rounded-xl bg-emerald-500/15 text-emerald-700 text-sm font-semibold border border-emerald-500/30 flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                        >
+                          <Check className="h-3.5 w-3.5" /> Confirmar presença
+                        </button>
+                        <button
+                          onClick={() => handleRSVP(f.id, "ausente")}
+                          className="flex-1 py-2 rounded-xl bg-muted text-muted-foreground text-sm font-semibold border border-border flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                        >
+                          <X className="h-3.5 w-3.5" /> Não poderei ir
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                  {rsvp === "confirmado" && (
+                    <div className="flex items-center gap-2 py-2 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                      <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                      <p className="text-sm text-emerald-700 font-semibold">Presença confirmada!</p>
+                      <button
+                        onClick={() => handleRSVP(f.id, null)}
+                        className="ml-auto text-xs text-muted-foreground underline"
+                      >
+                        Alterar
+                      </button>
+                    </div>
+                  )}
+
+                  {rsvp === "ausente" && (
+                    <div className="flex items-start gap-2 py-2 px-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                      <X className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-rose-600 font-semibold">Ausência registrada</p>
+                        {justificativas[f.id] ? (
+                          <p className="text-xs text-muted-foreground mt-0.5 italic line-clamp-2">
+                            "{justificativas[f.id]}"
+                          </p>
+                        ) : (
+                          <button
+                            onClick={() => setJustificativaAberta(f.id)}
+                            className="text-xs text-primary font-medium mt-0.5"
+                          >
+                            + Adicionar justificativa
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => handleRSVP(f.id, null)}
+                        className="text-xs text-muted-foreground underline shrink-0"
+                      >
+                        Alterar
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Formações anteriores — arquivo por ano */}
+      <section>
+        <div className="px-6 mb-3">
+          <h3 className="font-display text-lg text-foreground">Formações Anteriores</h3>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {passadas.length} formações · áudios e vídeos salvos
+          </p>
+        </div>
+        <div className="px-6 space-y-2">
+          {anos.map((ano) => {
+            const lista = formacoesByYear[ano];
+            const isOpen = openYears.has(ano);
+            return (
+              <div key={ano} className="rounded-3xl bg-card border border-border shadow-soft overflow-hidden glow-card">
+                {/* Year header */}
+                <button
+                  onClick={() => toggleYear(ano)}
+                  className="w-full flex items-center justify-between px-4 py-3.5"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="font-display text-2xl text-foreground">{ano}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {lista.length} {lista.length === 1 ? "formação" : "formações"}
+                    </span>
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Formation rows */}
+                {isOpen && (
+                  <div className="border-t border-border divide-y divide-border">
+                    {lista.map((f) => {
+                      const expanded = openFormacaoId === f.id;
+                      return (
+                        <div key={f.id}>
+                          <button
+                            onClick={() => toggleFormacao(f.id)}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-left"
+                          >
+                            <DateBox mes={f.mes} dia={f.dia} ano={f.ano} />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-base text-foreground font-medium truncate">
+                                {f.tema}
+                              </p>
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <Mic className="h-3 w-3 text-primary shrink-0" />
+                                <p className="text-xs text-primary font-medium truncate">
+                                  {f.pregador}
+                                </p>
+                                {f.duracao && (
+                                  <span className="text-xs text-muted-foreground">
+                                    · {f.duracao}
+                                    {f.videoUrl && " · vídeo"}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {expanded ? (
+                              <ChevronDown className="h-4 w-4 text-primary shrink-0 rotate-180 transition-transform" />
+                            ) : (
+                              <Play className="h-3.5 w-3.5 text-primary shrink-0" />
+                            )}
+                          </button>
+
+                          {expanded && f.audioUrl && (
+                            <div className="px-4 pb-4">
+                              <AudioPlayer formacao={f} />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Mural de oração */}
-      <section className="mt-6">
-        <div className="flex items-center justify-between px-6 mb-3">
-          <h3 className="font-display text-lg text-foreground">Mural de oração</h3>
-          <button
-            onClick={() => setOpen(true)}
-            className="flex items-center gap-1 text-xs text-primary font-semibold"
-          >
-            <Plus className="h-3.5 w-3.5" /> Novo pedido
-          </button>
-        </div>
-
-        <div className="px-6 space-y-3 stagger">
-          {pedidos.map((p) => (
-            <article key={p.id} className="rounded-3xl bg-card border border-border p-4 shadow-soft glow-card">
-              <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-display text-xs shrink-0 shadow-gold">
-                  {p.iniciais}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm text-foreground font-semibold truncate">{p.nome}</p>
-                    <span className={`shrink-0 text-[9px] font-semibold px-2 py-0.5 rounded-full ${categoriaColors[p.categoria] ?? "bg-muted text-muted-foreground"}`}>
-                      {p.categoria}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">{p.tempo}</p>
-                  <p className="text-sm text-foreground/85 mt-2 leading-relaxed">{p.texto}</p>
-                  <div className="flex items-center gap-2 mt-3">
-                    <button
-                      onClick={() => react(p.id, "rezando")}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        p.meRezando ? "bg-primary text-primary-foreground shadow-gold" : "bg-primary/12 text-primary"
-                      }`}
-                    >
-                      🙏 {p.rezando}
-                    </button>
-                    <button
-                      onClick={() => react(p.id, "apoio")}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        p.meApoio ? "bg-rose-500 text-white" : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      ❤️ {p.apoio}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* FAB */}
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-28 left-1/2 translate-x-[140px] z-40 h-14 w-14 rounded-full bg-gradient-primary text-primary-foreground shadow-gold flex items-center justify-center"
-      >
-        <Plus className="h-6 w-6" />
-      </button>
-
-      {/* Modal */}
-      {open && (
+      {/* Prompt de notificações — primeiro acesso */}
+      {showNotifPrompt && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 backdrop-blur-sm">
-          <div className="w-full max-w-[440px] bg-card border-t border-border rounded-t-3xl p-6 shadow-elegant animate-in slide-in-from-bottom">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display text-xl text-foreground">Novo Pedido</h3>
-              <button onClick={() => setOpen(false)} className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
-                <X className="h-4 w-4" />
+          <div className="w-full max-w-110 bg-card border-t border-border rounded-t-3xl px-6 pt-4 pb-28 shadow-elegant animate-in slide-in-from-bottom">
+            <div className="flex justify-center mb-4">
+              <div className="h-1 w-10 rounded-full bg-border" />
+            </div>
+
+            <div className="flex flex-col items-center text-center mb-6">
+              <div className="h-14 w-14 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                <Bell className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="font-display text-xl text-foreground mb-1">
+                Ativar notificações?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Deseja receber lembretes antes de cada formação do{" "}
+                <span className="font-semibold text-foreground">1º Elo</span>?
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => responderPrompt(true)}
+                className="w-full py-3 rounded-2xl bg-gradient-primary text-primary-foreground font-semibold shadow-gold flex items-center justify-center gap-2"
+              >
+                <Bell className="h-4 w-4" />
+                Sim, quero ser avisado
+              </button>
+              <button
+                onClick={() => responderPrompt(false)}
+                className="w-full py-3 rounded-2xl bg-muted text-muted-foreground font-semibold text-sm"
+              >
+                Agora não
               </button>
             </div>
-
-            {/* Categoria */}
-            <div className="flex gap-2 mb-3 flex-wrap">
-              {Object.keys(categoriaColors).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCategoria(c)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                    categoria === c ? "bg-gradient-primary text-primary-foreground shadow-gold" : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Compartilhe seu pedido com a comunidade..."
-              className="w-full h-28 rounded-2xl bg-input border border-border p-4 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:border-primary"
-            />
-            <button
-              onClick={submit}
-              className="w-full mt-3 py-3 rounded-2xl bg-gradient-primary text-primary-foreground font-semibold shadow-gold"
-            >
-              Enviar pedido
-            </button>
           </div>
         </div>
+      )}
+
+      {/* Justificativa modal */}
+      {justificativaAberta !== null && formacaoAberta && (
+        <JustificativaModal
+          tema={formacaoAberta.tema}
+          data={`${formacaoAberta.dia} ${formacaoAberta.mes} ${formacaoAberta.ano}`}
+          onSave={(text) => salvarJustificativa(justificativaAberta, text)}
+          onClose={() => setJustificativaAberta(null)}
+        />
       )}
     </div>
   );
