@@ -51,15 +51,20 @@ function Dashboard() {
 
       {/* Verse of the day */}
       <div className="px-6 mt-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep p-6 shadow-gold glow-card">
-          <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
-          <p className="text-xs uppercase tracking-widest text-primary-foreground/80 font-medium">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep px-6 py-5 shadow-gold glow-card">
+          <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="absolute -left-3 -top-1 font-display text-9xl text-white/10 leading-none select-none pointer-events-none">
+            "
+          </div>
+          <p className="text-[10px] uppercase tracking-widest text-primary-foreground/80 font-medium relative z-10 text-center">
             Versículo do Dia
           </p>
-          <p className="font-display text-2xl leading-snug text-primary-foreground mt-2 italic">
+          <p className="font-display text-2xl leading-snug text-primary-foreground mt-2 italic relative z-10">
             "Tudo posso naquele que me fortalece."
           </p>
-          <p className="text-xs text-primary-foreground/80 mt-3">Filipenses 4:13</p>
+          <div className="mt-3">
+            <p className="text-xs text-primary-foreground/80 text-center">Filipenses 4:13</p>
+          </div>
         </div>
       </div>
 
@@ -79,7 +84,7 @@ function Dashboard() {
           {events.map((e) => (
             <article
               key={e.id}
-              className="shrink-0 w-56 rounded-3xl bg-card border border-border overflow-hidden shadow-soft glow-card"
+              className="shrink-0 w-56 rounded-3xl bg-card-warm border border-border overflow-hidden shadow-soft glow-card"
             >
               <div className="relative h-32">
                 <img src={e.img} alt={e.title} className="h-full w-full object-cover" loading="lazy" draggable={false} />
@@ -99,7 +104,7 @@ function Dashboard() {
 
       {/* Adoração card */}
       <section className="px-6 mt-6">
-        <div className="rounded-3xl bg-card border border-border p-5 flex items-center gap-4 shadow-soft glow-card">
+        <div className="rounded-3xl bg-card-warm border border-border p-5 flex items-center gap-4 shadow-soft glow-card">
           <div className="h-12 w-12 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-gold">
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
@@ -120,7 +125,7 @@ function Dashboard() {
           {avisos.map((a) => (
             <div
               key={a.id}
-              className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border glow-card"
+              className="flex items-center gap-3 p-4 rounded-2xl bg-card-warm border border-border glow-card"
             >
               <div className="h-9 w-9 rounded-xl bg-primary/15 flex items-center justify-center">
                 <Bell className="h-4 w-4 text-primary" />
@@ -144,7 +149,7 @@ function Dashboard() {
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-display text-xl text-foreground">Pedidos de oração</h3>
         </div>
-        <div className="rounded-3xl bg-card border border-border p-5 shadow-soft glow-card">
+        <div className="rounded-3xl bg-card-warm border border-border p-5 shadow-soft glow-card">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-display text-sm">
               JS

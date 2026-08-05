@@ -89,6 +89,7 @@
   --gradient-warm: linear-gradient(160deg, oklch(1 0 0), oklch(0.97 0.035 55));
   --gradient-gold-deep: linear-gradient(140deg, oklch(0.65 0.18 44), oklch(0.80 0.14 56));
   --gradient-radial-gold: radial-gradient(circle at 30% 20%, oklch(0.83 0.12 56 / 25%), transparent 60%);
+  --gradient-card-warm: linear-gradient(150deg, oklch(1 0 0) 0%, oklch(0.955 0.055 52) 100%);
 
   --shadow-soft: 0 4px 16px -4px oklch(0.72 0.16 50 / 14%);
   --shadow-elegant: 0 12px 40px -12px oklch(0.72 0.16 50 / 18%);
@@ -123,6 +124,7 @@
 
   --gradient-warm: linear-gradient(160deg, oklch(0.17 0.015 40), oklch(0.13 0.020 42));
   --gradient-radial-gold: radial-gradient(circle at 30% 20%, oklch(0.72 0.16 50 / 10%), transparent 60%);
+  --gradient-card-warm: linear-gradient(150deg, oklch(0.19 0.020 42) 0%, oklch(0.24 0.040 48) 100%);
 }
 
 .dark body {
@@ -168,6 +170,7 @@
   .bg-gradient-warm { background-image: var(--gradient-warm); }
   .bg-gradient-gold-deep { background-image: var(--gradient-gold-deep); }
   .bg-gradient-radial-gold { background-image: var(--gradient-radial-gold); }
+  .bg-card-warm { background-color: var(--card); background-image: var(--gradient-card-warm); }
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-elegant { box-shadow: var(--shadow-elegant); }
   .shadow-gold { box-shadow: var(--shadow-gold); }

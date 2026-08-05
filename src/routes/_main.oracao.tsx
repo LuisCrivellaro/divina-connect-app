@@ -380,16 +380,12 @@ function MembrosElo() {
   return (
     <div className="relative pb-4">
 
-      {/* Header */}
-      <header className="px-6 pt-12 pb-4 flex items-start justify-between">
-        <div>
-          <img src={logo} alt="Divina Providência" className="h-14 w-auto mb-1.5" />
-          <h1 className="font-display text-2xl text-foreground">Membros do 1º Elo</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Formação e compromisso</p>
-        </div>
+      {/* Header — logo centralizada */}
+      <header className="px-6 pt-12 pb-4 relative flex items-center justify-center">
+        <img src={logo} alt="Divina Providência" className="h-14 w-auto" />
         <button
           onClick={toggleNotificacoes}
-          className={`mt-1 h-10 w-10 rounded-full border flex items-center justify-center shadow-soft transition-all ${
+          className={`absolute right-6 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border flex items-center justify-center shadow-soft transition-all ${
             notificacoes ? "bg-primary/10 border-primary/30" : "bg-card border-border"
           }`}
           aria-label={notificacoes ? "Desativar notificações" : "Ativar notificações"}
@@ -402,6 +398,12 @@ function MembrosElo() {
         </button>
       </header>
 
+      {/* Título */}
+      <div className="px-6 mb-5">
+        <h2 className="font-display text-3xl text-foreground">Membros do 1º Elo</h2>
+        <p className="text-sm text-muted-foreground mt-1">Formação e compromisso</p>
+      </div>
+
       {/* Versículo — tamanhos intocados */}
       <div className="px-6 mb-6">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep px-6 py-5 shadow-gold glow-card">
@@ -409,18 +411,13 @@ function MembrosElo() {
           <div className="absolute -left-3 -top-1 font-display text-9xl text-white/10 leading-none select-none pointer-events-none">
             "
           </div>
-          <p className="text-[10px] uppercase tracking-widest text-primary-foreground/55 font-semibold mb-3">
-            Versículo do 1º Elo
-          </p>
-          <p className="font-display text-[17px] text-primary-foreground leading-relaxed italic relative z-10">
+          <p className="font-display text-xl text-primary-foreground leading-relaxed italic relative z-10">
             "E se alguém prevalecer contra um, dois lhe resistirão; e o cordão de três dobras não se quebra tão depressa."
           </p>
-          <div className="mt-4 flex items-center gap-3">
-            <div className="h-px flex-1 bg-white/20" />
-            <p className="text-[11px] text-primary-foreground/65 font-semibold tracking-wide">
+          <div className="mt-4">
+            <p className="text-xs text-primary-foreground/65 font-semibold tracking-wide text-center">
               Eclesiastes 4:12
             </p>
-            <div className="h-px flex-1 bg-white/20" />
           </div>
         </div>
       </div>
@@ -435,7 +432,7 @@ function MembrosElo() {
           {proximas.map((f) => {
             const rsvp = rsvps[f.id] ?? null;
             return (
-              <article key={f.id} className="rounded-3xl bg-card border border-border p-4 shadow-soft glow-card">
+              <article key={f.id} className="rounded-3xl bg-card-warm border border-border p-4 shadow-soft glow-card">
                 <div className="flex items-start gap-3">
                   <DateBox mes={f.mes} dia={f.dia} ano={f.ano} />
                   <div className="flex-1 min-w-0">
@@ -538,7 +535,7 @@ function MembrosElo() {
             const lista = formacoesByYear[ano];
             const isOpen = openYears.has(ano);
             return (
-              <div key={ano} className="rounded-3xl bg-card border border-border shadow-soft overflow-hidden glow-card">
+              <div key={ano} className="rounded-3xl bg-card-warm border border-border shadow-soft overflow-hidden glow-card">
                 {/* Year header */}
                 <button
                   onClick={() => toggleYear(ano)}

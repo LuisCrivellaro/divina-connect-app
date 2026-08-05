@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ScreenHeader } from "@/components/MobileShell";
-import { Bell, Calendar, Camera, ChevronRight, LogOut, Settings, Shield, X, Check } from "lucide-react";
+import { Bell, Calendar, ChevronRight, LogOut, Settings, Shield, X, Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { useSettings } from "@/lib/settings";
 
@@ -83,38 +83,33 @@ function Perfil() {
         <div className="rounded-3xl bg-gradient-gold-deep p-5 sm:p-6 shadow-gold relative overflow-hidden glow-card">
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
           <div className="flex items-center gap-4 relative">
-            {/* Avatar com botão de foto */}
+            {/* Avatar clicável */}
             <div className="relative shrink-0">
-              <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-card border-4 border-primary-foreground/30 overflow-hidden flex items-center justify-center font-display text-3xl text-primary">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                aria-label="Alterar foto de perfil"
+                className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-card border-4 border-primary-foreground/30 overflow-hidden flex items-center justify-center font-display text-3xl text-primary transition-transform active:scale-95"
+              >
                 {photoUrl ? (
                   <img src={photoUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
                 ) : (
                   "MA"
                 )}
-              </div>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                aria-label="Alterar foto de perfil"
-                className="absolute bottom-0 right-0 h-7 w-7 rounded-full bg-primary flex items-center justify-center shadow-gold border-2 border-card transition-transform active:scale-90"
-              >
-                <Camera className="h-3.5 w-3.5 text-primary-foreground" />
               </button>
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                capture="user"
                 className="hidden"
                 onChange={handlePhotoChange}
               />
             </div>
 
-            <div className="min-w-0">
+            <div className="min-w-0 flex flex-col items-center">
               <h2 className="font-display text-xl sm:text-2xl text-primary-foreground truncate">Luis Filipe Crivellaro</h2>
               <span className="inline-flex items-center gap-1.5 mt-1 text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground">
                 <Shield className="h-3 w-3 shrink-0" /> Membro Comprometido
               </span>
-              <p className="text-[11px] text-primary-foreground/60 mt-2">Toque na foto para alterar</p>
             </div>
           </div>
         </div>

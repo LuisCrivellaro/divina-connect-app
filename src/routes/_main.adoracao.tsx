@@ -50,13 +50,20 @@ function Adoracao() {
 
       <div className="px-6 mt-5 space-y-5 stagger">
 
-        {/* Convite */}
-        <div className="rounded-3xl bg-gradient-gold-deep p-6 shadow-gold glow-card">
-          <p className="text-xs uppercase tracking-widest text-primary-foreground/75 font-semibold">Convite à Adoração</p>
-          <p className="font-display text-xl text-primary-foreground italic leading-snug mt-2">
-            "Não pudestes vigiar uma hora comigo?"
+        {/* Versículo */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-gold-deep px-6 py-5 shadow-gold glow-card">
+          <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="absolute -left-3 -top-1 font-display text-9xl text-white/10 leading-none select-none pointer-events-none">
+            "
+          </div>
+          <p className="font-display text-xl text-primary-foreground leading-relaxed italic relative z-10">
+            "Vinde, adoremos e prostremo-nos; ajoelhemos diante do Senhor que nos criou."
           </p>
-          <p className="text-xs text-primary-foreground/75 mt-2">Mateus 26:40</p>
+          <div className="mt-4">
+            <p className="text-xs text-primary-foreground/65 font-semibold tracking-wide text-center">
+              Salmo 95:6
+            </p>
+          </div>
         </div>
 
         {/* Aberta 24h */}
